@@ -18,6 +18,7 @@ export class User
   public username!: string;
   public email!: string;
   public password!: string;
+  public progress!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -47,6 +48,10 @@ export function UserFactory(sequelize: Sequelize): typeof User {
       },
       password: {
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      progress: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
