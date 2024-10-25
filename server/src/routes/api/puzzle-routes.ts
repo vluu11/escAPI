@@ -18,9 +18,7 @@ router.get('/', async (_req: Request, res: Response) => {
 router.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const puzzle = await Puzzle.findByPk(id, {
-      attributes: { exclude: ['password'] }
-    });
+    const puzzle = await Puzzle.findByPk(id, {});
     if (puzzle) {
       res.json(puzzle);
     } else {
@@ -33,9 +31,9 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 // POST /puzzles - Create a new puzzle
 router.post('/', async (req: Request, res: Response) => {
-  const { puzzlename, email, password, progress } = req.body;
+  const { room_id, description, solution } = req.body;
   try {
-    const newPuzzle = await Puzzle.create({ puzzlename, email, password, progress });
+    const newPuzzle = await Puzzle.create({ room_id, description, solution });
     res.status(201).json(newPuzzle);
   } catch (error: any) {
     res.status(400).json({ message: error.message });
@@ -45,12 +43,13 @@ router.post('/', async (req: Request, res: Response) => {
 // PUT /puzzles/:id - Update a puzzle by id
 router.put('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { puzzlename, password } = req.body;
+  const { room_id, description, solution } = req.body;
   try {
     const puzzle = await Puzzle.findByPk(id);
     if (puzzle) {
-      puzzle.puzzlename = puzzlename;
-      puzzle.password = password;
+      puzzle.room_id = room_id;
+      puzzle.description = description;
+      puzzle.solution = solution;
       await puzzle.save();
       res.json(puzzle);
     } else {
