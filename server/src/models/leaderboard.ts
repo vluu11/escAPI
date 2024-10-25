@@ -5,7 +5,7 @@ export class Leaderboard extends Model implements LeaderboardAttributes{
     public id!: number;
     public user_id!: number;
     public time_to_complete!: number;
-    public readonly created_at!: Date;
+    public readonly updated_at!: Date;
 }
 
 export function LeaderboardFactory(sequelize: Sequelize): typeof Leaderboard {
@@ -23,12 +23,17 @@ export function LeaderboardFactory(sequelize: Sequelize): typeof Leaderboard {
             time_to_complete: {
                 type: DataTypes.INTEGER,
                 allowNull: false
+            },
+            updated_at: {
+                type: DataTypes.DATE,
+                defaultValue: DataTypes.NOW,
+                allowNull: false
             }
         },
         {
             tableName: 'leaderboard',
             sequelize,
-            timestamps: false
+            underscored: true
         }
     );
 
