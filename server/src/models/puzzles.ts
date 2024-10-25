@@ -28,28 +28,23 @@ export function PuzzleFactory(sequelize: Sequelize): typeof Puzzle {
         autoIncrement: true,
         primaryKey: true,
       },
-      : {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      progress: {
+      room_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      solution: {
+        type: DataTypes.TEXT,
         allowNull: false,
       },
     },
+    {
+        tableName: 'puzzles',
+        sequelize,
+      }
   );
 
   return Puzzle;
