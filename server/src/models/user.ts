@@ -6,6 +6,8 @@ interface UserAttributes {
   username: string;
   email: string;
   password: string;
+  progress: number;
+  createdAt: Date;
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
@@ -18,9 +20,10 @@ export class User
   public username!: string;
   public email!: string;
   public password!: string;
+  public progress!: number;
 
   public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  // public readonly updatedAt!: Date;
 
   // Hash the password before saving the user
   public async setPassword(password: string) {
@@ -47,6 +50,15 @@ export function UserFactory(sequelize: Sequelize): typeof User {
       },
       password: {
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      progress: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
         allowNull: false,
       },
     },
