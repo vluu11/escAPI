@@ -1,7 +1,7 @@
-interface Rooms {
+interface RoomAttributes {
     id: number;
     name: string;
     puzzle_id: number;
 }
 
-export default Rooms;
+export default RoomAttributes;
