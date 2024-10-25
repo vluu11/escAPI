@@ -1,7 +1,10 @@
 import { DataTypes, type Sequelize, Model } from 'sequelize';
-import LeaderboardAttributes from '../interface/leaderboard'; 
+import LeaderboardAttributes from '../interface/leaderboardAttributes'; 
 
-export class Leaderboard extends Model implements LeaderboardAttributes{
+export class Leaderboard 
+    extends Model<LeaderboardAttributes> 
+    implements LeaderboardAttributes{
+        
     public id!: number;
     public user_id!: number;
     public time_to_complete!: number;

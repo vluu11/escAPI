@@ -1,7 +1,10 @@
 import { DataTypes, type Sequelize, Model } from "sequelize";
-import RoomAttributes from "../interface/rooms";
+import RoomAttributes from "../interface/roomsAttributes";
 
-export class Rooms extends Model implements RoomAttributes{
+export class Rooms 
+    extends Model<RoomAttributes> 
+    implements RoomAttributes{
+        
     public id!: number;
     public name!: string;
     public puzzle_id!: number;
