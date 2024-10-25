@@ -1,6 +1,17 @@
 import { DataTypes, type Sequelize, Model, type Optional } from 'sequelize';
 import bcrypt from 'bcrypt';
+<<<<<<< HEAD
 import UserAttributes from '../interface/userAttriubtes';
+=======
+
+interface UserAttributes {
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+  progress: number;
+}
+>>>>>>> 9c6446164528c7dd1f5c1d7b2d062277742f977e
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 
@@ -13,8 +24,7 @@ export class User
   public email!: string;
   public password!: string;
   public progress!: number;
-
-  public readonly createdAt!: Date;
+  public createdAt!: Date;
   // public readonly updatedAt!: Date;
 
   // Hash the password before saving the user
@@ -48,11 +58,11 @@ export function UserFactory(sequelize: Sequelize): typeof User {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false,
-      },
+      // createdAt: {
+      //   type: DataTypes.DATE,
+      //   defaultValue: DataTypes.NOW,
+      //   allowNull: false,
+      // },
     },
     {
       tableName: 'users',
