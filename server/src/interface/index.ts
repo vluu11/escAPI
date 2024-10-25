@@ -9,5 +9,10 @@ const Leaderboard = LeaderboardFactory(sequelize);
 const Puzzle = PuzzleFactory(sequelize);
 const Rooms = RoomsFactory(sequelize);
 
+Leaderboard.hasMany(User);
+User.belongsTo(Leaderboard);
+
+Rooms.hasMany(Puzzle);
+Puzzle.belongsTo(Rooms);
 
 export { User, Leaderboard, Puzzle, Rooms}; 
