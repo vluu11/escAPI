@@ -1,23 +1,14 @@
-import { DataTypes, type Sequelize, Model, type Optional } from 'sequelize';
-
-interface PuzzleAttributes {
-  id: number;
-  room_id: number;
-  description: string;
-  solution: string;
-}
-
-interface PuzzleCreationAttributes extends Optional<PuzzleAttributes, 'id'> {}
+import { DataTypes, type Sequelize, Model} from 'sequelize';
+import PuzzleAttributes from '../interface/puzzleAttributes';
 
 export class Puzzle
-  extends Model<PuzzleAttributes, PuzzleCreationAttributes>
+  extends Model<PuzzleAttributes>
   implements PuzzleAttributes
 {
   public id!: number;
   public room_id!: number;
   public description!: string;
   public solution!: string;
-
 }
 
 export function PuzzleFactory(sequelize: Sequelize): typeof Puzzle {
