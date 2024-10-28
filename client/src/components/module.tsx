@@ -2,13 +2,12 @@ import { useState, type FormEvent, type ChangeEvent } from 'react';
 import Auth from '../utils/auth';
 import { login } from '../api/authAPI';
 import type { UserLogin } from '../interfaces/UserLogin';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Login: React.FC = () => {
-  const [formData, setFormData] = useState({
+const Module: React.FC = () => {
+  const [formData, setFormData] = useState<UserLogin>({
     username: '',
     password: '',
-    rememberMe: false,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,10 +18,14 @@ const Login: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    login(formData)
-    console.log('Form Data:', formData);
+    try {
+      const data = await login(formData);
+      Auth.login(data.token);
+    } catch (err) {
+      console.error('Failed to login', err);
+    }
   };
 
   return (
@@ -37,7 +40,7 @@ const Login: React.FC = () => {
               id="username"
               name="username"
               placeholder="username"
-              value={formData.username}
+              value={formData.username || ''}
               onChange={handleChange}
               required
             />
@@ -50,25 +53,10 @@ const Login: React.FC = () => {
               id="password"
               name="password"
               placeholder="Password"
-              value={formData.password}
+              value={formData.password || ''}
               onChange={handleChange}
               required
             />
-          </div>
-          <div className="mb-3">
-            <div className="form-check">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="rememberMe"
-                name="rememberMe"
-                checked={formData.rememberMe}
-                onChange={handleChange}
-              />
-              <label className="form-check-label" htmlFor="rememberMe">
-                Remember me
-              </label>
-            </div>
           </div>
           <button type="submit" className="btn btn-primary me-2">Login</button>
           <button type="button" className="btn btn-secondary">Create Account</button>
@@ -78,4 +66,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Module;
