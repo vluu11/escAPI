@@ -6,7 +6,7 @@ import App from './App.tsx';
 
 import ErrorPage from './pages/ErrorPage.tsx';
 import Home from './pages/Home.tsx';
-import Login from './pages/Login.tsx';
+import Login from './components/module.tsx';
 
 const router = createBrowserRouter([
   {
@@ -29,4 +29,4 @@ const router = createBrowserRouter([
 const rootElement = document.getElementById('root');
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(<RouterProvider router={router} />);
-}
+};
