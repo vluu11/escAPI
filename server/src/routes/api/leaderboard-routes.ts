@@ -1,6 +1,6 @@
 import express from 'express';
 import type { Request, Response } from 'express';
-import { Leaderboard } from '../../interface';
+import { Leaderboard } from '../../models/index.js';
 
 
 const router = express.Router(); 
