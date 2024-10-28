@@ -1,6 +1,6 @@
-export interface Leaderboard {
-    user_id: number | null;
-    time_to_complete: number | null;
-    updated_at: number | null;
+export interface Puzles {
+    room_id: number | null;
+    description: number | null;
+    solution: number | null;
   }
   

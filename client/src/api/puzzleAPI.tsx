@@ -1,6 +1,6 @@
-const retrieveLeaderboard = async () => {
+const retrievePuzzles = async () => {
     try {
-      const response = await fetch('/api/leaderboard');
+      const response = await fetch('/api/puzzle');
       const data = await response.json();
   
       if (!response.ok) {
@@ -14,4 +14,4 @@ const retrieveLeaderboard = async () => {
     }
   };
   
-  export { retrieveLeaderboard };
+  export { retrievePuzzles };
