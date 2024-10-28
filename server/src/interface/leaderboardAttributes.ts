@@ -4,5 +4,4 @@ interface LeaderboardAttributes {
     time_to_complete: number;
     updated_at: Date;
 }
-
 export default LeaderboardAttributes;
