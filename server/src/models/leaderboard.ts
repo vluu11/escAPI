@@ -1,8 +1,10 @@
-import { DataTypes, type Sequelize, Model } from 'sequelize';
+import { DataTypes, type Sequelize, Model, type Optional } from 'sequelize';
 import LeaderboardAttributes from '../interface/leaderboardAttributes'; 
 
+export interface LeaderboardCreationAttributes extends Optional<LeaderboardAttributes, 'id'> {}
+
 export class Leaderboard 
-    extends Model<LeaderboardAttributes> 
+    extends Model<LeaderboardAttributes, LeaderboardCreationAttributes> 
     implements LeaderboardAttributes{
         
     public id!: number;
