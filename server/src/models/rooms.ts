@@ -25,7 +25,7 @@ export function RoomsFactory(sequelize: Sequelize): typeof Rooms{
                 allowNull: false
             },
             puzzle_id: {
-                type: DataTypes.NUMBER,
+                type: DataTypes.INTEGER,
                 allowNull: false
             }
         },
