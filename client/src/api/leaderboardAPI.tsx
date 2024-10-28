@@ -1,13 +1,6 @@
-import Auth from '../utils/auth';
-
-const retrieveUsers = async () => {
+const retrieveLeaderboard = async () => {
   try {
-    const response = await fetch('/api/users', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${Auth.getToken()}`,
-      },
-    });
+    const response = await fetch('/api/leaderboard');
     const data = await response.json();
 
     if (!response.ok) {
@@ -21,4 +14,4 @@ const retrieveUsers = async () => {
   }
 };
 
-export { retrieveUsers };
+export { retrieveLeaderboard };
