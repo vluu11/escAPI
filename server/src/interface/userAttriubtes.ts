@@ -4,7 +4,6 @@ interface UserAttributes {
     email: string;
     password: string;
     progress: number;
-    createdAt: Date;
 }
 
 export default UserAttributes;

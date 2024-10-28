@@ -1,4 +1,5 @@
 import { seedUsers } from './user-seeds.js';
+import { seedLeaderboard } from './leaderboard-seed.js';
 import sequelize from '../config/connection.js';
 
 const seedAll = async (): Promise<void> => {
@@ -7,6 +8,9 @@ const seedAll = async (): Promise<void> => {
     console.log('\n----- DATABASE SYNCED -----\n');
 
     await seedUsers();
+    console.log('\n----- USERS SEEDED -----\n');
+
+    await seedLeaderboard();
     console.log('\n----- USERS SEEDED -----\n');
 
     process.exit(0);

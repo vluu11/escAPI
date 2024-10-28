@@ -1,14 +1,6 @@
 import { DataTypes, type Sequelize, Model, type Optional } from 'sequelize';
 import bcrypt from 'bcrypt';
-
-interface UserAttributes {
-  id: number;
-  username: string;
-  email: string;
-  password: string;
-  progress: number;
-  createdAt: Date;
-}
+import UserAttributes from '../interface/userAttriubtes';
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 
@@ -21,11 +13,9 @@ export class User
   public email!: string;
   public password!: string;
   public progress!: number;
-
-  public readonly createdAt!: Date;
+  public createdAt!: Date;
   // public readonly updatedAt!: Date;
 
-  // Hash the password before saving the user
   public async setPassword(password: string) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(password, saltRounds);
@@ -56,11 +46,11 @@ export function UserFactory(sequelize: Sequelize): typeof User {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false,
-      },
+      // createdAt: {
+      //   type: DataTypes.DATE,
+      //   defaultValue: DataTypes.NOW,
+      //   allowNull: false,
+      // },
     },
     {
       tableName: 'users',

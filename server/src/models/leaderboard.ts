@@ -1,7 +1,5 @@
-import { DataTypes, type Sequelize, Model, type Optional } from 'sequelize';
+import { DataTypes, type Sequelize, Model, Optional } from 'sequelize';
 import LeaderboardAttributes from '../interface/leaderboardAttributes'; 
-
-export interface LeaderboardCreationAttributes extends Optional<LeaderboardAttributes, 'id'> {}
 
 export class Leaderboard 
     extends Model<LeaderboardAttributes, LeaderboardCreationAttributes> 
@@ -12,6 +10,8 @@ export class Leaderboard
     public time_to_complete!: number;
     public readonly updated_at!: Date;
 }
+
+interface LeaderboardCreationAttributes extends Optional<LeaderboardAttributes, 'id'> {}
 
 export function LeaderboardFactory(sequelize: Sequelize): typeof Leaderboard {
     Leaderboard.init(
