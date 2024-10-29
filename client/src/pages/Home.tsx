@@ -9,6 +9,7 @@ import auth from '../utils/auth';
 import Module from '../components/Module';
 import Leaderboard from "../components/Leaderboard";
 import TextToSpeech from "../components/TextToSpeech";
+import ThreeScene from "../components/ThreeScene";
 
 const Home = () => {
 
@@ -107,6 +108,7 @@ const Home = () => {
                 </button>
                 )}
             </div>
+            <ThreeScene loginCheck={loginCheck} />
         </>
     );
 };

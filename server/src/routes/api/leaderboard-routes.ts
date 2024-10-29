@@ -1,13 +1,14 @@
 import express from 'express';
 import type { Request, Response } from 'express';
-import { Leaderboard } from '../../models/index.js';
-
+import { Leaderboard, User } from '../../models/index.js';
 
 const router = express.Router(); 
 
 router.get('/', async (_req: Request, res: Response) => {
     try{
-        const leaderboardData = await Leaderboard.findAll();
+        const leaderboardData = await Leaderboard.findAll({
+            include: [{model: User}],
+        });
 
         res.status(200).json(leaderboardData);
     }catch(error: any){
