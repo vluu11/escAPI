@@ -1,5 +1,6 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import { retrieveUsers } from "../api/userAPI";
+import { retrieveLeaderboard } from "../api/leaderboardAPI";
 import type { UserData } from "../interfaces/UserData";
 import type { LeaderboardData } from "../interfaces/LeaderboardData";
 import ErrorPage from "./ErrorPage";
@@ -12,7 +13,7 @@ import TextToSpeech from "../components/TextToSpeech";
 const Home = () => {
 
     const [users, setUsers] = useState<UserData[]>([]);
-    const [board] = useState<LeaderboardData[]>([]);
+    const [board, setBoard] = useState<LeaderboardData[]>([]);
     const [error, setError] = useState(false);
     const [loginCheck, setLoginCheck] = useState(false);
     const [isModuleOpen, setIsModuleOpen] = useState(true);
@@ -30,6 +31,7 @@ const Home = () => {
     useEffect(() => {
         if (loginCheck) {
             fetchUsers();
+            fetchBoard();
         }
     }, [loginCheck]);
 
@@ -47,6 +49,16 @@ const Home = () => {
         try {
             const data = await retrieveUsers();
             setUsers(data)
+        } catch (err) {
+            console.error('Failed to retrieve tickets:', err);
+            setError(true);
+        }
+    }
+
+    const fetchBoard = async () => {
+        try {
+            const data = await retrieveLeaderboard();
+            setBoard(data)
         } catch (err) {
             console.error('Failed to retrieve tickets:', err);
             setError(true);
