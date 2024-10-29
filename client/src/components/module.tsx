@@ -1,6 +1,6 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
 import Auth from '../utils/auth';
-import { login } from '../api/authAPI';
+import { login, register } from '../api/authAPI';
 import type { UserLogin } from '../interfaces/UserLogin';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -29,6 +29,16 @@ const Module: React.FC<ModuleProps> = ({ onClose }) => {
       Auth.login(data.token);
     } catch (err) {
       console.error('Failed to login', err);
+    }
+  };
+
+  const handleCreateAccount = async () => {
+    try {
+      const data = await register(formData);
+      Auth.login(data.token); // Auto-login after successful registration
+      onClose(); // Close the module after successful registration
+    } catch (err) {
+      console.error('Failed to create account', err);
     }
   };
 
@@ -69,7 +79,7 @@ const Module: React.FC<ModuleProps> = ({ onClose }) => {
             />
           </div>
           <button type="submit" className="btn btn-primary me-2">Login</button>
-          <button type="button" className="btn btn-secondary">Create Account</button>
+          <button type="button" className="btn btn-secondary" onClick={handleCreateAccount}>Create Account</button>
         </form>
       </div>
     </div>

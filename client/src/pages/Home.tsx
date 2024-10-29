@@ -13,7 +13,7 @@ const Home = () => {
     const [users, setUsers] = useState<UserData[]>([]);
     const [error, setError] = useState(false);
     const [loginCheck, setLoginCheck] = useState(false);
-    const [isModuleOpen, setIsModuleOpen] = useState(false);
+    const [isModuleOpen, setIsModuleOpen] = useState(true);
 
 
     const toggleModule = () => {
@@ -65,12 +65,7 @@ const Home = () => {
                 )}
             <div>
                 {!loginCheck ? (
-                <>
-                    <button className='btn' type='button' onClick={toggleModule}>
-                    {isModuleOpen ? 'Close Module' : 'Open Module'}
-                    </button>
-                    {isModuleOpen && <Module onClose={toggleModule} />} {/* Conditionally render the Module component */}
-                </>
+                    isModuleOpen && <Module onClose={toggleModule} />
                 ) : (
                 <button
                     className='btn'
