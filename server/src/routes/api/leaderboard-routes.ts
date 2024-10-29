@@ -1,13 +1,19 @@
 import express from 'express';
 import type { Request, Response } from 'express';
 import { Leaderboard } from '../../models/index.js';
+import { User } from '../../models/index.js';
 
 
 const router = express.Router(); 
 
 router.get('/', async (_req: Request, res: Response) => {
     try{
-        const leaderboardData = await Leaderboard.findAll();
+        const leaderboardData = await Leaderboard.findAll({
+            include: {
+              model: User,
+              attributes: ['id', 'username'], // Specify the fields you want from the User model
+            },
+          });
 
         res.status(200).json(leaderboardData);
     }catch(error: any){
