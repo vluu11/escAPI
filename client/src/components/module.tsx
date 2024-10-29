@@ -4,7 +4,11 @@ import { login } from '../api/authAPI';
 import type { UserLogin } from '../interfaces/UserLogin';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Module: React.FC = () => {
+interface ModuleProps {
+  onClose: () => void;
+}
+
+const Module: React.FC<ModuleProps> = ({ onClose }) => {
   const [formData, setFormData] = useState<UserLogin>({
     username: '',
     password: '',
@@ -29,8 +33,14 @@ const Module: React.FC = () => {
   };
 
   return (
-    <div className="p-3 m-0 border-0 bd-example">
-      <div className="dropdown-menu">
+    <div className="overlay d-flex align-items-center justify-content-center">
+      <div className="p-3 m-0 border-0 bd-example bg-white rounded shadow-lg">
+        <button
+          type="button"
+          className="btn-close position-absolute top-0 end-0 m-2"
+          onClick={onClose}
+          aria-label="Close"
+        />
         <form className="px-4 py-3" onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="username" className="form-label">Username</label>
