@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', async (_req: Request, res: Response) => {
     try{
-        const leaderboardData = Leaderboard.findAll();
+        const leaderboardData = await Leaderboard.findAll();
 
         res.status(200).json(leaderboardData);
     }catch(error: any){
