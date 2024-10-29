@@ -1,4 +1,5 @@
 import Auth from '../utils/auth';
+import { LeaderboardData } from '../interfaces/LeaderboardData';
 
 const retrieveLeaderboard = async () => {
   try {
@@ -13,7 +14,9 @@ const retrieveLeaderboard = async () => {
       throw new Error('invalid user API response, check network tab!');
     }
 
-    const data = await response.json();
+    const data: LeaderboardData[] = await response.json();
+    console.log('data');
+    console.log(data);
     return data;
   } catch (err) {
     console.log('Error from data retrieval:', err);

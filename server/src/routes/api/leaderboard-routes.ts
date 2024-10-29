@@ -11,7 +11,7 @@ router.get('/', async (_req: Request, res: Response) => {
         const leaderboardData = await Leaderboard.findAll({
             include: {
               model: User,
-              attributes: ['id', 'username'], // Specify the fields you want from the User model
+              attributes: ['id', 'username'], 
             },
           });
 
