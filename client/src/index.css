@@ -1706,3 +1706,19 @@ form [type='radio'] {
     align-content: center;
   }
 }
+
+/* Overlay CSS */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  z-index: 1050; /* higher z-index to appear above other content */
+}
+
+.module-content {
+  max-width: 500px;
+  text-align: center;
+}

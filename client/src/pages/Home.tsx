@@ -4,6 +4,7 @@ import type { UserData } from "../interfaces/UserData";
 import ErrorPage from "./ErrorPage";
 import UserList from '../components/Users';
 import auth from '../utils/auth';
+import Module from '../components/Module';
 
 import TextToSpeech from "../components/TextToSpeech";
 
@@ -12,6 +13,12 @@ const Home = () => {
     const [users, setUsers] = useState<UserData[]>([]);
     const [error, setError] = useState(false);
     const [loginCheck, setLoginCheck] = useState(false);
+    const [isModuleOpen, setIsModuleOpen] = useState(true);
+
+
+    const toggleModule = () => {
+        setIsModuleOpen(!isModuleOpen);
+    };
 
     useEffect(() => {
         if (loginCheck) {
@@ -56,6 +63,21 @@ const Home = () => {
                 ) : (
                     <UserList users={users} />
                 )}
+            <div>
+                {!loginCheck ? (
+                    isModuleOpen && <Module onClose={toggleModule} />
+                ) : (
+                <button
+                    className='btn'
+                    type='button'
+                    onClick={() => {
+                    auth.logout();
+                    }}
+                >
+                    Logout
+                </button>
+                )}
+            </div>
         </>
     );
 };
