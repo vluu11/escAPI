@@ -5,6 +5,7 @@ import ErrorPage from "./ErrorPage";
 import UserList from '../components/Users';
 import auth from '../utils/auth';
 
+
 const Home = () => {
 
     const [users, setUsers] = useState<UserData[]>([]);

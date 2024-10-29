@@ -7,8 +7,8 @@ const router = express.Router();
 // GET /puzzles - Get all puzzles
 router.get('/', async (_req: Request, res: Response) => {
   try {
-    const puzzles = await Puzzle.findAll({});
-    res.json(puzzles);
+    const puzzles = await Puzzle.findAll();
+    res.status(200).json(puzzles);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -18,7 +18,7 @@ router.get('/', async (_req: Request, res: Response) => {
 router.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const puzzle = await Puzzle.findByPk(id, {});
+    const puzzle = await Puzzle.findByPk(id);
     if (puzzle) {
       res.json(puzzle);
     } else {
