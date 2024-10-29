@@ -5,6 +5,7 @@ import ErrorPage from "./ErrorPage";
 import UserList from '../components/Users';
 import auth from '../utils/auth';
 
+import TextToSpeech from "../components/TextToSpeech";
 
 const Home = () => {
 
@@ -44,6 +45,7 @@ const Home = () => {
 
     return (
         <>
+            <TextToSpeech/>
             {
                 !loginCheck ? (
                     <div className='login-notice'>
