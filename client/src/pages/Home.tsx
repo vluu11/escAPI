@@ -1,23 +1,30 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import { retrieveUsers } from "../api/userAPI";
 import type { UserData } from "../interfaces/UserData";
+import type { LeaderboardData } from "../interfaces/LeaderboardData";
 import ErrorPage from "./ErrorPage";
 import UserList from '../components/Users';
 import auth from '../utils/auth';
 import Module from '../components/Module';
-
+import Leaderboard from "../components/Leaderboard";
 import TextToSpeech from "../components/TextToSpeech";
 
 const Home = () => {
 
     const [users, setUsers] = useState<UserData[]>([]);
+    const [board] = useState<LeaderboardData[]>([]);
     const [error, setError] = useState(false);
     const [loginCheck, setLoginCheck] = useState(false);
     const [isModuleOpen, setIsModuleOpen] = useState(true);
+    const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
 
 
     const toggleModule = () => {
         setIsModuleOpen(!isModuleOpen);
+    };
+
+    const toggleLeaderboard = () => {
+        setIsLeaderboardOpen(!isLeaderboardOpen);
     };
 
     useEffect(() => {
@@ -61,7 +68,17 @@ const Home = () => {
                         </h1>
                     </div>
                 ) : (
-                    <UserList users={users} />
+                    <>
+                        <UserList users={users} />
+                        <button 
+                            className="btn btn-primary mt-3" 
+                            type="button"
+                            onClick={toggleLeaderboard} 
+                        >
+                            {isLeaderboardOpen ? 'Hide Leaderboard' : 'Show Leaderboard'}
+                        </button>
+                        {isLeaderboardOpen && <Leaderboard board={board} />} {/* Render the Leaderboard component */}
+                    </>
                 )}
             <div>
                 {!loginCheck ? (
