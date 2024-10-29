@@ -4,13 +4,23 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
 
-const ThreeScene: React.FC = () => {
+interface ThreeSceneProps {
+    loginCheck: boolean; // Add this prop to receive loginCheck
+}
+
+const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
     const mountRef = useRef<HTMLDivElement | null>(null);
     const clock = useRef(new THREE.Clock());
     const cameraRef = useRef<THREE.PerspectiveCamera | null>(null); 
     let isAnimationPlaying = false;
 
     useEffect(() => {
+        // loginCheck
+        if (loginCheck) {
+            console.log('User is logged in');
+            // Add any logic that depends on loginCheck
+        
+
         // Set up scene, camera, renderer
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -352,8 +362,10 @@ const ThreeScene: React.FC = () => {
             if (mountRef.current) {
                 mountRef.current.removeChild(renderer.domElement);
             }
+            renderer.dispose();
         };
-    }, []);
+        }
+    }, [loginCheck]);
 
     return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />;
 };
