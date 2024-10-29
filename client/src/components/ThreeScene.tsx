@@ -77,6 +77,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
         
             // Inside the GLTFLoader callback for the suitcase model
         document.addEventListener('click', (event) => {
+            console.log('Suitcase clicked!');
             const raycaster = new THREE.Raycaster();
             const mouse = new THREE.Vector2();
             
@@ -93,6 +94,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
             const intersects = raycaster.intersectObject(suitcaseModel!, true);
             
             if (intersects.length > 0) {
+                console.log('suitcase should move');
                 const action = suitcaseMixer!.clipAction(animations[0]); // Assuming the first animation
                 
                 action.setLoop(THREE.LoopOnce, 1);
