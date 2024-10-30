@@ -1,14 +1,16 @@
 // ThreeScene.tsx
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
+import SlidingPuzzle from './SlidingPuzzle';
 
 interface ThreeSceneProps {
     loginCheck: boolean; // Add this prop to receive loginCheck
 }
 
 const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
+    const [isPuzzleOpen, setIsPuzzleOpen] = useState(false);
     const mountRef = useRef<HTMLDivElement | null>(null);
     const clock = useRef(new THREE.Clock());
     const cameraRef = useRef<THREE.PerspectiveCamera | null>(null); 
@@ -101,6 +103,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
                     action.paused = false;
                     action.play();
                     isAnimationPlaying = true;
+                    setIsPuzzleOpen(true);
                 } else {
                     action.paused = true;
                     action.stop();
@@ -367,7 +370,17 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
         }
     }, [loginCheck]);
 
-    return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />;
+    return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} > 
+        {isPuzzleOpen && (
+            <SlidingPuzzle 
+                image="/public/images/chest_interior.png" // Set puzzle image path
+                contentBackgroundImage="/public/images/chest_interior.png" // Set background image path
+                size={4} // or any other size for the puzzle
+                isOpen={isPuzzleOpen}
+                onClose={() => setIsPuzzleOpen(false)} // Close the puzzle modal
+            />
+        )}
+    </div>;
 };
 
 export default ThreeScene;
