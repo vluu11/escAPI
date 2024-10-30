@@ -6,7 +6,7 @@ import type { LeaderboardData } from "../interfaces/LeaderboardData";
 import ErrorPage from "./ErrorPage";
 import UserList from '../components/Users';
 import auth from '../utils/auth';
-import Module from '../components/Module';
+import Module from '../components/module';
 import Leaderboard from "../components/Leaderboard";
 import TextToSpeech from "../components/TextToSpeech";
 import ThreeScene from "../components/ThreeScene";
