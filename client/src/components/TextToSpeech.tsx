@@ -23,8 +23,7 @@ const TextToSpeech: React.FC = () => {
 
   return (
     <div>
-      <h1>Text to Speech Example</h1>
-      <button onClick={() => speak("Hello, this is a text to speech example!")}>
+      <button className='btn' onClick={() => speak("Escape or Die!")}>
         Speak
       </button>
     </div>
