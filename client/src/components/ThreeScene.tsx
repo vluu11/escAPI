@@ -380,11 +380,11 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
     return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} > 
         {isPuzzleOpen && (
             <SlidingPuzzle 
-                image="/images/chest_interior.png" // Set puzzle image path
-                contentBackgroundImage="/public/images/chest_interior.png" // Set background image path
-                size={4} // or any other size for the puzzle
+                image="/images/chest_puzzle.png" 
+                contentBackgroundImage="/public/images/chest_interior.png" 
+                size={4} 
                 isOpen={isPuzzleOpen}
-                onClose={() => setIsPuzzleOpen(false)} // Close the puzzle modal
+                onClose={() => setIsPuzzleOpen(false)} 
             />
         )}
     </div>;
