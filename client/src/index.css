@@ -1722,3 +1722,20 @@ form [type='radio'] {
   max-width: 500px;
   text-align: center;
 }
+
+.loginForm > div > label{
+  height: 30px;
+}
+
+.loginForm > button {
+  background-color: #ab0414 !important;
+  color: white !important;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  width: 100%;  
+  height: 50px;
+}

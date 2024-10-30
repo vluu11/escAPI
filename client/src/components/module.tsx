@@ -45,13 +45,16 @@ const Module: React.FC<ModuleProps> = ({ onClose }) => {
   return (
     <div className="overlay d-flex align-items-center justify-content-center">
       <div className="p-3 m-0 border-0 bd-example bg-white rounded shadow-lg">
+        <header className="modal-header">
+          <h2>EscAPI</h2>
+        </header>
         <button
           type="button"
           className="btn-close position-absolute top-0 end-0 m-2"
           onClick={onClose}
           aria-label="Close"
         />
-        <form className="px-4 py-3" onSubmit={handleSubmit}>
+        <form className="px-4 py-3 loginForm" onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="username" className="form-label">Username</label>
             <input
@@ -79,7 +82,7 @@ const Module: React.FC<ModuleProps> = ({ onClose }) => {
             />
           </div>
           <button type="submit" className="btn btn-primary me-2">Login</button>
-          <button type="button" className="btn btn-secondary" onClick={handleCreateAccount}>Create Account</button>
+          <button type="button" className="btn btn-secondary" onClick={handleCreateAccount}>Create Account!</button>
         </form>
       </div>
     </div>
