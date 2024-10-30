@@ -35,12 +35,11 @@ export const register = async (req: Request, res: Response) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     const autoEmail = `${username}@escape.com`;
 
     // Create and save the new user
-    const newUser = await User.create({ username, password: hashedPassword, email: autoEmail , progress: 0 });
+    const newUser = await User.create({ username, password, email: autoEmail , progress: 0 });
 
     const secretKey = process.env.JWT_SECRET_KEY || '';
     const token = jwt.sign({ username: newUser.username }, secretKey, { expiresIn: '1h' });

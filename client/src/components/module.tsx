@@ -34,13 +34,13 @@ const Module: React.FC<ModuleProps> = ({ onClose }) => {
 
   const handleCreateAccount = async () => {
     try {
-      const data = await register(formData);
-      Auth.login(data.token); // Auto-login after successful registration
-      onClose(); // Close the module after successful registration
+        const data = await register(formData);
+        Auth.login(data.token); // Store the token for future authenticated requests
+        onClose(); // Close the module after successful registration
     } catch (err) {
-      console.error('Failed to create account', err);
+        console.error('Failed to create account', err);
     }
-  };
+};
 
   return (
     <div className="overlay d-flex align-items-center justify-content-center">
