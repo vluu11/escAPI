@@ -1,17 +1,22 @@
 // ThreeScene.tsx
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
+import SlidingPuzzle from './SlidingPuzzle';
+import ImageModal from './ImageModal';
 
 interface ThreeSceneProps {
     loginCheck: boolean; // Add this prop to receive loginCheck
 }
 
 const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPuzzleOpen, setIsPuzzleOpen] = useState(false);
     const mountRef = useRef<HTMLDivElement | null>(null);
     const clock = useRef(new THREE.Clock());
     const cameraRef = useRef<THREE.PerspectiveCamera | null>(null); 
+    const animationsRef = useRef<THREE.AnimationClip[]>([]);
     let isAnimationPlaying = false;
 
     useEffect(() => {
@@ -63,8 +68,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
         
             suitcaseMixer = new THREE.AnimationMixer(suitcaseModel);
             
-            const animations = gltf.animations;
-            animations.forEach((clip) => {
+            animationsRef.current = gltf.animations;
+            animationsRef.current.forEach((clip) => {
                 const action = suitcaseMixer!.clipAction(clip);
                 action.paused = true; // Ensure the action starts paused
                 action.clampWhenFinished = true; // Clamping when finished
@@ -72,45 +77,78 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
         
             const boxHelper1 = new THREE.BoxHelper(suitcaseModel, 0xff0000); // Red box for visibility
             scene.add(boxHelper1);
+
+            document.addEventListener('click', (event: MouseEvent) =>{
+                const raycaster = new THREE.Raycaster();
+                const mouse = new THREE.Vector2();
+    
+                const rect = renderer.domElement.getBoundingClientRect();
+                mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    
+                raycaster.setFromCamera(mouse, camera);
+    
+                // Check for intersection with the suitcase model
+                const intersects = raycaster.intersectObject(boxHelper1!, true);
+                
+                if (intersects.length > 0) {
+                    console.log("Suitcase clicked!"); // Debug log
+                    const action = suitcaseMixer!.clipAction(animationsRef.current[0]); // Assuming the first animation
+                    action.setLoop(THREE.LoopOnce, 1);
+    
+                    if (!isAnimationPlaying) {
+                        action.reset();
+                        action.play();
+                        isAnimationPlaying = true;
+                        setIsPuzzleOpen(true);
+                    } else {
+                        action.reset();
+                        action.stop();
+                        isAnimationPlaying = false;
+                    }
+                }
+            })
         
             suitcaseBox = new THREE.Box3().setFromObject(suitcaseModel);
         
             // Inside the GLTFLoader callback for the suitcase model
-        document.addEventListener('click', (event) => {
-            const raycaster = new THREE.Raycaster();
-            const mouse = new THREE.Vector2();
-            
-            // Get the bounding rectangle of the canvas
-            const rect = renderer.domElement.getBoundingClientRect();
-        
-            // Normalize mouse coordinates for raycasting relative to the canvas
-            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-        
-            raycaster.setFromCamera(mouse, camera);
-            
-            // Raycast with 'true' to test against children of the suitcase model
-            const intersects = raycaster.intersectObject(suitcaseModel!, true);
-            
-            if (intersects.length > 0) {
-                const action = suitcaseMixer!.clipAction(animations[0]); // Assuming the first animation
-                
-                action.setLoop(THREE.LoopOnce, 1);
-                
-                if (!isAnimationPlaying) {
-                    action.paused = false;
-                    action.play();
-                    isAnimationPlaying = true;
-                } else {
-                    action.paused = true;
-                    action.stop();
-                    isAnimationPlaying = false;
-                }
-            }
-        });
         }, undefined, (error) => {
             console.error('Error loading suitcase model:', error);
         });
+        
+        // // Handle click event for suitcase
+        // const handleClick = (event: MouseEvent) => {
+        //     const raycaster = new THREE.Raycaster();
+        //     const mouse = new THREE.Vector2();
+
+        //     const rect = renderer.domElement.getBoundingClientRect();
+        //     mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        //     mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        //     raycaster.setFromCamera(mouse, camera);
+
+        //     // Check for intersection with the suitcase model
+        //     const intersects = raycaster.intersectObject(suitcaseModel!, true);
+            
+        //     if (intersects.length > 0) {
+        //         console.log("Suitcase clicked!"); // Debug log
+        //         const action = suitcaseMixer!.clipAction(animationsRef.current[0]); // Assuming the first animation
+        //         action.setLoop(THREE.LoopOnce, 1);
+
+        //         if (!isAnimationPlaying) {
+        //             action.reset();
+        //             action.play();
+        //             isAnimationPlaying = true;
+        //             setIsPuzzleOpen(true);
+        //         } else {
+        //             action.reset();
+        //             action.stop();
+        //             isAnimationPlaying = false;
+        //         }
+        //     }
+        // };
+
+        // document.addEventListener('click', handleClick);
 
         // Load the bookshelf model
         const bookshelfPath = '/model/victorian_bookshelf.glb';
@@ -191,6 +229,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
                             bookAction.reset();
                             bookAction.play();
                             isAnimationPlaying = true;
+                            setIsModalOpen(true);
                         } else {
                             bookAction.reset();
                             bookAction.stop();
@@ -272,6 +311,8 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
         // Controls
         const controls = new PointerLockControls(camera, renderer.domElement);
         document.addEventListener('click', () => controls.lock());
+
+        
 
         const keys: { [key: string]: boolean } = {};
 
@@ -367,7 +408,22 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
         }
     }, [loginCheck]);
 
-    return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />;
+    return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} > 
+        {isPuzzleOpen && (
+            <SlidingPuzzle 
+                image="/images/chest_puzzle.png" 
+                contentBackgroundImage="/images/chest_interior.png" 
+                size={4} 
+                isOpen={isPuzzleOpen}
+                onClose={() => setIsPuzzleOpen(false)} 
+            />
+            
+        )}
+        <ImageModal 
+            isOpen={isModalOpen} 
+            onClose={() => setIsModalOpen(false)} 
+        />
+    </div>;
 };
 
 export default ThreeScene;
