@@ -9,8 +9,8 @@ const Puzzle = PuzzleFactory(sequelize);
 const Room = RoomsFactory(sequelize);
 const User = UserFactory(sequelize);
 
-Leaderboard.hasMany(User);
-User.belongsTo(Leaderboard)
+Leaderboard.belongsTo(User, { foreignKey: 'user_id', targetKey: 'id' });
+// User.belongsTo(Leaderboard);
 
 Room.hasMany(Puzzle);
 Puzzle.belongsTo(Room)

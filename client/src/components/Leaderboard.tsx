@@ -16,6 +16,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ board }) => {
                     <thead>
                         <tr>
                             <th scope="col">User ID</th>
+                            <th scope="col">Username</th>
                             <th scope="col">Time to Complete</th>
                             <th scope="col">Updated At</th>
                         </tr>
@@ -24,6 +25,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ board }) => {
                         {board.map((user) => (
                             <tr key={user.user_id}>
                                 <td>{user.user_id}</td>
+                                <td>{user.User?.username}</td>
                                 <td>{user.time_to_complete}</td>
                                 <td>{user.updated_at}</td>
                             </tr>
