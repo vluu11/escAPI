@@ -19,7 +19,11 @@ export const authenticateToken = (
 
     jwt.verify(token, secretKey, (err, user) => {
       if (err) {
-        return res.sendStatus(403); // Forbidden
+        // Check if the error is due to token expiration
+        if (err.name === 'TokenExpiredError') {
+          return res.status(401).json({ message: 'Token expired, please log in again.' });
+        }
+        return res.sendStatus(403); // Forbidden for other JWT errors
       }
 
       req.user = user as JwtPayload;
