@@ -7,7 +7,10 @@ const router = express.Router();
 router.get('/', async (_req: Request, res: Response) => {
     try{
         const leaderboardData = await Leaderboard.findAll({
-            include: [{model: User}],
+            include: [{
+                model: User,
+                attributes: ['username'],
+            }],
         });
 
         res.status(200).json(leaderboardData);
