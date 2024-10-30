@@ -4,12 +4,14 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
 import SlidingPuzzle from './SlidingPuzzle';
+import ImageModal from './ImageModal';
 
 interface ThreeSceneProps {
     loginCheck: boolean; // Add this prop to receive loginCheck
 }
 
 const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPuzzleOpen, setIsPuzzleOpen] = useState(false);
     const mountRef = useRef<HTMLDivElement | null>(null);
     const clock = useRef(new THREE.Clock());
@@ -75,6 +77,37 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
         
             const boxHelper1 = new THREE.BoxHelper(suitcaseModel, 0xff0000); // Red box for visibility
             scene.add(boxHelper1);
+
+            document.addEventListener('click', (event: MouseEvent) =>{
+                const raycaster = new THREE.Raycaster();
+                const mouse = new THREE.Vector2();
+    
+                const rect = renderer.domElement.getBoundingClientRect();
+                mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    
+                raycaster.setFromCamera(mouse, camera);
+    
+                // Check for intersection with the suitcase model
+                const intersects = raycaster.intersectObject(boxHelper1!, true);
+                
+                if (intersects.length > 0) {
+                    console.log("Suitcase clicked!"); // Debug log
+                    const action = suitcaseMixer!.clipAction(animationsRef.current[0]); // Assuming the first animation
+                    action.setLoop(THREE.LoopOnce, 1);
+    
+                    if (!isAnimationPlaying) {
+                        action.reset();
+                        action.play();
+                        isAnimationPlaying = true;
+                        setIsPuzzleOpen(true);
+                    } else {
+                        action.reset();
+                        action.stop();
+                        isAnimationPlaying = false;
+                    }
+                }
+            })
         
             suitcaseBox = new THREE.Box3().setFromObject(suitcaseModel);
         
@@ -83,41 +116,39 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
             console.error('Error loading suitcase model:', error);
         });
         
-        // Handle click event for suitcase
-        const handleClick = (event: MouseEvent) => {
-            const raycaster = new THREE.Raycaster();
-            const mouse = new THREE.Vector2();
+        // // Handle click event for suitcase
+        // const handleClick = (event: MouseEvent) => {
+        //     const raycaster = new THREE.Raycaster();
+        //     const mouse = new THREE.Vector2();
 
-            const rect = renderer.domElement.getBoundingClientRect();
-            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        //     const rect = renderer.domElement.getBoundingClientRect();
+        //     mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        //     mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-            raycaster.setFromCamera(mouse, camera);
+        //     raycaster.setFromCamera(mouse, camera);
 
-            // Check for intersection with the suitcase model
-            const intersects = raycaster.intersectObject(suitcaseModel!, true);
+        //     // Check for intersection with the suitcase model
+        //     const intersects = raycaster.intersectObject(suitcaseModel!, true);
             
-            if (intersects.length > 0) {
-                console.log("Suitcase clicked!"); // Debug log
-                const action = suitcaseMixer!.clipAction(animationsRef.current[0]); // Assuming the first animation
-                action.setLoop(THREE.LoopOnce, 1);
+        //     if (intersects.length > 0) {
+        //         console.log("Suitcase clicked!"); // Debug log
+        //         const action = suitcaseMixer!.clipAction(animationsRef.current[0]); // Assuming the first animation
+        //         action.setLoop(THREE.LoopOnce, 1);
 
-                if (!isAnimationPlaying) {
-                    console.log("Suitcase clicked!");
-                    action.paused = false;
-                    action.play();
-                    isAnimationPlaying = true;
-                    setIsPuzzleOpen(true);
-                    console.log("Puzzle open state set to true.");  // Open the puzzle when suitcase is clicked
-                } else {
-                    action.paused = true;
-                    action.stop();
-                    isAnimationPlaying = false;
-                }
-            }
-        };
+        //         if (!isAnimationPlaying) {
+        //             action.reset();
+        //             action.play();
+        //             isAnimationPlaying = true;
+        //             setIsPuzzleOpen(true);
+        //         } else {
+        //             action.reset();
+        //             action.stop();
+        //             isAnimationPlaying = false;
+        //         }
+        //     }
+        // };
 
-        document.addEventListener('click', handleClick);
+        // document.addEventListener('click', handleClick);
 
         // Load the bookshelf model
         const bookshelfPath = '/model/victorian_bookshelf.glb';
@@ -198,6 +229,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
                             bookAction.reset();
                             bookAction.play();
                             isAnimationPlaying = true;
+                            setIsModalOpen(true);
                         } else {
                             bookAction.reset();
                             bookAction.stop();
@@ -367,7 +399,6 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
         window.addEventListener('resize', onWindowResize);
 
         return () => {
-            document.removeEventListener('click', handleClick);
             window.removeEventListener('resize', onWindowResize);
             if (mountRef.current) {
                 mountRef.current.removeChild(renderer.domElement);
@@ -381,12 +412,17 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ loginCheck }) => {
         {isPuzzleOpen && (
             <SlidingPuzzle 
                 image="/images/chest_puzzle.png" 
-                contentBackgroundImage="/public/images/chest_interior.png" 
+                contentBackgroundImage="/images/chest_interior.png" 
                 size={4} 
                 isOpen={isPuzzleOpen}
                 onClose={() => setIsPuzzleOpen(false)} 
             />
+            
         )}
+        <ImageModal 
+            isOpen={isModalOpen} 
+            onClose={() => setIsModalOpen(false)} 
+        />
     </div>;
 };
 
