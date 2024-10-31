@@ -37,7 +37,19 @@ Developed using:
 
 Developers: 
 - Vuong Luu
+- Stephen Lee
+- Elijah Mcknight
+- Aidan Choi
 
+3D Objects:
+- Khalid Rahman Hanify: Animated Book, https://sketchfab.com/3d-models/book-animated-book-historical-book-097f8683aa5d4c9da1530d6119c20ac3
+- Okapiguy: Victorian Bookshelf, https://sketchfab.com/3d-models/victorian-bookshelf-9f548046646f404782b8838ec14932f8
+- shuvalov.di: Pedestal desk, https://sketchfab.com/3d-models/pedestal-desk-2a1d9a65ecc748559993dbb0d413d1cb
+- sergeilihandristov: Old pitchman suitcase, https://sketchfab.com/3d-models/old-pitchman-suitcase-b2d2ff038bae48a59893afb7727e51d6
+- Shedmon: Front Door, https://sketchfab.com/3d-models/front-door-534f28f191f442b188b23f1dd46d8b60
+
+Repo: https://github.com/vluu11/escAPI
+Deploy: https://escapi.onrender.com
 
 
 ## License
